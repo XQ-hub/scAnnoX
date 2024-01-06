@@ -19,14 +19,16 @@ println <- function(X, verbose = TRUE, status = c('INFO', 'WARN', 'ERROR')) {
     }
 }
 
+#' @title downSamplSeurat
+
+
 downSamplSeurat <- function(obj, seed = 123, percent = 0.5){
   set.seed(seed)
   cells <- Idents(obj) %>% table
   sub.cells <- sapply(names(cells), function(xx) {
     sub.cells <- Idents(obj)[Idents(obj) == xx] %>% names
     cnt <- ifelse(is.null(percent), cnt, length(sub.cells) * percent)
-    if (length(sub.cells) > cnt) 
-      sub.cells <- sample(sub.cells, cnt, replace = FALSE)
+    if (length(sub.cells) > cnt) sub.cells <- sample(sub.cells, cnt, replace = FALSE)
     return(sub.cells) }) %>% unlist(use.names = F)
   subset(obj, cells = sub.cells)
 }
@@ -44,27 +46,6 @@ downSamplSeurat <- function(obj, seed = 123, percent = 0.5){
 multipleProcess <- function(n.workers = 10) {
     options(future.globals.maxSize = 500000 * 1024^2, future.seed = TRUE)
     future::plan("multicore", workers = n.workers)
-}
-
-#' println
-
-#' Print prompt message.
-#' @param infos Message that need to be printed.
-#' @param verbose Bool value, print out messages or not, default: TRUE.
-#' @param status (optional) Status of running messages or error. Default: INFO.
-#' @return NULL.
-#' @export println
-#'
-#' @examples
-#' println('Begin analysis ->', verbose = TRUE, status = 'INFO', 'example')
-
-println <- function(X, verbose = TRUE, status = c('INFO', 'WARN', 'ERROR')) {
-    status <- match.arg(status)
-    infos <- X %>% paste0('[', status, '] ', .)
-    if (verbose || status == 'ERROR') {
-        cat(paste0(infos, '\n'))
-        if (status == 'ERROR') stop()
-    }
 }
 
 #' collapseLisToFrame
@@ -85,20 +66,6 @@ collapseLisToFrame <- function(marker.lst) {
     return(marker.lst)
 }
 
-#' multipleProcess
-
-#' Open multiple workers for Seurat processing.
-#' @param n.workers Number of cores. Default: 10.
-#' @return NULL
-#' @export multipleProcess
-#'
-#' @examples
-#' multipleProcess(n.workers = 10)
-
-multipleProcess <- function(n.workers = 10) {
-    options(future.globals.maxSize = 500000 * 1024^2, future.seed = TRUE)
-    future::plan("multicore", workers = n.workers)
-}
 
 #' findMarkerToolsForSc
 

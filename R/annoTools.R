@@ -99,7 +99,8 @@ sciBetAnno <- function(obj.seu, ref.obj, ref.ctype = NULL, ...) {
 #' obj.seu <- scmapAnno(obj.seu, ref.obj)
 
 scmapAnno <- function(obj.seu, ref.obj, ref.ctype = NULL, slot.data = c('data', 'count'), ...) {
-   devtools::load_all("../scAnnoX/modules/scmap-master/")
+    system.file('modules', 'scmap-master', package = 'scAnnoX') %>% load_all(.)
+	
     ref.expr <- GetAssayData(ref.obj, slot = slot.data) %>% as.matrix
     if (!is.null(ref.ctype)) label.ref <- ref.obj@meta.data[, ref.ctype]
 	else label.ref <- Idents(ref.obj)
@@ -257,7 +258,7 @@ cellIDAnno <- function(obj.seu, marker.lst = NULL, gset.len = 5, sig.cut = 2, sp
    if (!('data' %in% assay.names)) obj.seu@assays$data <- obj.seu@assays$RNA
    obj.seu <- CelliD::RunMCA(obj.seu)
 	if (is.null(marker.lst)) {
-		panglao <- system.file('data', 'PanglaoDB_markers_27_Mar_2020.tsv.gz', package = 'Biotools') %>% read_tsv
+		panglao <- system.file('data', 'PanglaoDB_markers_27_Mar_2020.tsv.gz', package = 'scAnnoX') %>% read_tsv
 		panglao.all <- panglao %>% filter(str_detect(species, match.arg(species)))
 		if (!is.null(tissue.type)) panglao.all <- panglao.all %>% filter(organ == tissue.type)
 		panglao.all <- panglao.all %>%  
@@ -293,11 +294,11 @@ cellIDAnno <- function(obj.seu, marker.lst = NULL, gset.len = 5, sig.cut = 2, sp
 #' obj.seu <- sctypeAnno(obj.seu, marker.lst)
 
 sctypeAnno <- function(obj.seu, marker.lst = NULL, tissue.type = 'Immune system', ...) {
-	source("..//scAnnoX//modules//sc-type-master//R//auto_detect_tissue_type.R")
-	source("..//scAnnoX//modules//sc-type-master//R//gene_sets_prepare.R")
-	source("..//scAnnoX//modules//sc-type-master//R//sctype_score_.R")
-	marker.dbfile <- 'modules//scAnnoX//ScTypeDB_full.xlsx'
-	suppressMessages(library('HGNChelper'))
+	system.file('modules', 'sc-type-master/R/auto_detect_tissue_type.R', package = 'scAnnoX') %>% source(.)
+	system.file('modules', 'sc-type-master/R/gene_sets_prepare.R', package = 'scAnnoX') %>% source(.)
+	system.file('modules', 'sc-type-master/R/sctype_score_.R', package = 'scAnnoX') %>% source(.)
+	
+	marker.dbfile <- system.file('modules', 'sc-type-master/ScTypeDB_full.xlsx', package = 'scAnnoX')
 	if (is.null(marker.lst)) {
 		gs.list <- gene_sets_prepare(marker.dbfile, tissue.type)
 	} else {
@@ -311,7 +312,6 @@ sctypeAnno <- function(obj.seu, marker.lst = NULL, tissue.type = 'Immune system'
 	obj.seu$scTypeAnno <- pred.res
     return(obj.seu)
 }
-
 
 #' scinaAnno
 
