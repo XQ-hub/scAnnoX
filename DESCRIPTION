@@ -1,8 +1,10 @@
 Package: scAnnoX
 Title: What the Package Does (One Line, Title Case)
 Version: 1.0.0
-Authors@R: 
-    person("Xiaoqian", "Huang",  "h_xiaoq@163.com", role = c("aut", "cre"))
+Date: 2024-01-06
+Authors: c(person("Xiaoqian", "Huang", "h_xiaoq@163.com", role = c("aut")))
+Maintainer: Xiaoqian Huang <h_xiaoq@163.com>
+Encoding: UTF-8
 Description: What the package does (one paragraph).
 License: GPL (>=3)
 Encoding: UTF-8
@@ -12,6 +14,7 @@ Depends:
 	R (>= 4.0.0),
 	Seurat,
 	dplyr,
+	HGNChelper,
 	devtools
 Imports:
 	SingleCellExperiment,
