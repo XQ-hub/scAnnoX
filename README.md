@@ -17,7 +17,7 @@ library(SingleCellExperiment)
 
 # A preprocessed dataset of type Seurat.
 test.obj <- readRDS('../scAnnoX/data/GSE81608.test.obj')
-#ref.obj <- readRDS('../scAnnoX/data/GSE81608.ref.obj')
+ref.obj <- readRDS('../scAnnoX/data/GSE81608.ref.obj')
 
 # Using SingleR as an example.
 pred.obj <- autoAnnoTools(
