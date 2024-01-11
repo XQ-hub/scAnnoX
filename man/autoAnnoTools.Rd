@@ -2,8 +2,7 @@
 % Please edit documentation in R/main.R
 \name{autoAnnoTools}
 \alias{autoAnnoTools}
-\title{autoAnnoTools
-Automated single-cell annotation using publicly available tools.}
+\title{autoAnnoTools}
 \usage{
 autoAnnoTools(
   obj.seu,
@@ -36,6 +35,5 @@ Notably, ref.obj and marker.lst are antagonistic, and must be provide one. Defau
 Annotated Seurat object, predicted results are embedded into meta.data slot.
 }
 \description{
-autoAnnoTools
 Automated single-cell annotation using publicly available tools.
 }

@@ -6,8 +6,6 @@
 Open multiple workers for Seurat processing.}
 \usage{
 multipleProcess(n.workers = 10)
-
-multipleProcess(n.workers = 10)
 }
 \arguments{
 \item{n.workers}{Number of cores. Default: 10.}
@@ -15,11 +13,7 @@ multipleProcess(n.workers = 10)
 \description{
 multipleProcess
 Open multiple workers for Seurat processing.
-
-multipleProcess
-Open multiple workers for Seurat processing.
 }
 \examples{
-multipleProcess(n.workers = 10)
 multipleProcess(n.workers = 10)
 }

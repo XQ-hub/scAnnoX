@@ -19,8 +19,15 @@ println <- function(X, verbose = TRUE, status = c('INFO', 'WARN', 'ERROR')) {
     }
 }
 
+
 #' @title downSamplSeurat
 
+#' A subsampling function for Seurat type data.
+#' @param obj Seurat object.
+#' @param seed Number of seed. Default: 123.
+#' @param percent Number of percent. Default: 0.5.
+#' @return NULL
+#' @export downSamplSeurat
 
 downSamplSeurat <- function(obj, seed = 123, percent = 0.5){
   set.seed(seed)
@@ -47,6 +54,7 @@ multipleProcess <- function(n.workers = 10) {
     options(future.globals.maxSize = 500000 * 1024^2, future.seed = TRUE)
     future::plan("multicore", workers = n.workers)
 }
+
 
 #' collapseLisToFrame
 
@@ -98,6 +106,7 @@ findMarkerToolsForSc <- function(
 	)
 	return(res.markers)
 }
+
 
 #' findMarkersBySeurat
 

@@ -2,8 +2,7 @@
 % Please edit documentation in R/main.R
 \name{autoAnnoResult}
 \alias{autoAnnoResult}
-\title{autoAnnoResult
-Integrate the prediction results of the algorithm in the autoAnnoTools function.}
+\title{autoAnnoResult}
 \usage{
 autoAnnoResult(anno)
 }
@@ -14,6 +13,5 @@ autoAnnoResult(anno)
 Seurat object with consolidated results.
 }
 \description{
-autoAnnoResult
 Integrate the prediction results of the algorithm in the autoAnnoTools function.
 }

@@ -6,8 +6,6 @@
 Print prompt message.}
 \usage{
 println(X, verbose = TRUE, status = c("INFO", "WARN", "ERROR"))
-
-println(X, verbose = TRUE, status = c("INFO", "WARN", "ERROR"))
 }
 \arguments{
 \item{verbose}{Bool value, print out messages or not, default: TRUE.}
@@ -18,17 +16,11 @@ println(X, verbose = TRUE, status = c("INFO", "WARN", "ERROR"))
 }
 \value{
 NULL.
-
-NULL.
 }
 \description{
 println
 Print prompt message.
-
-println
-Print prompt message.
 }
 \examples{
-println('Begin analysis ->', verbose = TRUE, status = 'INFO', 'example')
 println('Begin analysis ->', verbose = TRUE, status = 'INFO', 'example')
 }

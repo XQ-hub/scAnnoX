@@ -1,11 +1,10 @@
 Package: scAnnoX
-Title: What the Package Does (One Line, Title Case)
+Title: An R Package Integrating Multiple Public Tools for Single-Cell Annotation.
 Version: 1.0.0
 Date: 2024-01-06
-Authors: c(person("Xiaoqian", "Huang", "h_xiaoq@163.com", role = c("aut")))
+Authors@R: person("Xiaoqian", "Huang", "h_xiaoq@163.com", role = c("aut"))
 Maintainer: Xiaoqian Huang <h_xiaoq@163.com>
-Encoding: UTF-8
-Description: What the package does (one paragraph).
+Description: scAnnoX is an R package that integrates 10 different cell identity algorithms for single-cell sequencing data into a unified framework, and allows comparison between different algorithms according to experimental results. Among them, 10 algorithms include SingleR, Seurat, sciBet, scmap, CHETAH, scSorter, sc.type, cellID, scCATCH, SCINA. It is designed to assist researchers to analyze scRNA-seq data more efficiently, so that they can make more informed decisions among the complex selection of single cell identification algorithms, and more easily test, evaluate, and compare multiple algorithms in an integrated environment.
 License: GPL (>=3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -10,9 +10,7 @@
 #' @param top.k Top k expressed genes of each subset remained. Default: NULL.
 #' @return Annotated Seurat object, predicted results are embedded into meta.data slot.
 #' @export autoAnnoTools
-#' 
-#' @examples
-#' 
+#'  
 
 autoAnnoTools <- function(
 	obj.seu, 
@@ -51,26 +49,29 @@ autoAnnoTools <- function(
     return(obj.seu)
 }
 
-#' autoAnnoResult
 
-#' Integrate the prediction results of the algorithm in the autoAnnoTools function.
+#' @title autoAnnoResult
+
+#' @description Integrate the prediction results of the algorithm in the autoAnnoTools function.
 #' @param anno The predicted results of the algorithm in the autoAnnoTools function.
 #' @return Seurat object with consolidated results.
 #' @export autoAnnoResult
 #' 
-#' @examples
-#' 
+ 
 autoAnnoResult <- function(anno) {
     if(! type(anno) == 'data.frame') anno <- as.data.frame(anno)
     anno$scAnnoX <- apply(anno.res, 1, function(row) names(which.max(table(row)/ncol(anno))))
     return(anno)
     }
-	
+
+
 #' @title listToolMethods
 
-#' @description 
+#' @description Select the direction function of the single cell annotation tool.
 #' @return A vector functions of tools used for single-cell annotation.
-	
+#' @export listToolMethods
+#' 
+
 listToolMethods <- function(){
 	return(
 		SingleR = singleRAnno,
