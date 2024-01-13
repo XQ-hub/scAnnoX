@@ -245,7 +245,7 @@ sccatchAnno <-function(obj.seu, marker.lst = NULL, qry.cluster = 'idents', speci
 #' @param tissue.type Specify the tissue type when using markes from PanglaoDB database. Default: NULL.
 #' @param ... More arguments can be assessed using the sctype_score function in the sc.type package.
 #' @return Annotated Seurat object, predicted results are embedded into meta.data slot.
-#' @export sctypeAnno
+#' @export cellIDAnno
 #'
 #' @examples
 #' obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') %>% readRDS(.)
