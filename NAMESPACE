@@ -2,9 +2,11 @@
 
 export(autoAnnoResult)
 export(autoAnnoTools)
+export(cellIDAnno)
 export(chetahAnno)
 export(collapseLisToFrame)
 export(downSamplSeurat)
+export(findMarkerToolsForSc)
 export(findMarkersBySeurat)
 export(listToolMethods)
 export(multipleProcess)

@@ -74,6 +74,7 @@ autoAnnoResult <- function(anno) {
 
 listToolMethods <- function(){
 	return(
+     list(
 		SingleR = singleRAnno,
 		Seurat = seuratAnno,
 		sciBet = sciBetAnno,
@@ -83,6 +84,6 @@ listToolMethods <- function(){
 		scCATCH =  sccatchAnno,
 		cellID = cellIDAnno,
 		sc.type = sctypeAnno,
-		SCINA = scinaAnno
+		SCINA = scinaAnno)
 	)
 }
