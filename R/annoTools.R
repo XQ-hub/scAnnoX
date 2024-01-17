@@ -72,9 +72,9 @@ seuratAnno <- function(obj.seu, ref.obj, ref.ctype = NULL, npcs = 30, ...) {
 
 sciBetAnno <- function(obj.seu, ref.obj, ref.ctype = NULL, ...) {
 	test.df <- GetAssayData(obj.seu, slot = "data") %>% as.data.frame %>% t
-    	ref.df <- GetAssayData(ref.obj, slot = "data") %>% as.data.frame %>% t
-    	if (!is.null(ref.ctype)) label.ref <- ref.obj@meta.data[, ref.ctype]
-    	else label.ref <- Idents(ref.obj)
+    ref.df <- GetAssayData(ref.obj, slot = "data") %>% as.data.frame %>% t
+    if (!is.null(ref.ctype)) label.ref <- ref.obj@meta.data[, ref.ctype]
+    else label.ref <- Idents(ref.obj)
 	ref.df <- cbind.data.frame(ref.df, label = label.ref %>% as.vector)
 	res.pred <- scibetR::SciBet_R(ref.df, test.df, ...)
 	obj.seu$sciBet <- res.pred
@@ -99,7 +99,7 @@ sciBetAnno <- function(obj.seu, ref.obj, ref.ctype = NULL, ...) {
 #' obj.seu <- scmapAnno(obj.seu, ref.obj)
 
 scmapAnno <- function(obj.seu, ref.obj, ref.ctype = NULL, slot.data = c('data', 'count'), ...) {
-    system.file('modules', 'scmap-master', package = 'scAnnoX') %>% load_all(.)
+    system.file(package = 'scAnnoX') %>% file.path(., 'scmap-master') %>% load_all(.)
 	
     ref.expr <- GetAssayData(ref.obj, slot = slot.data) %>% as.matrix
     if (!is.null(ref.ctype)) label.ref <- ref.obj@meta.data[, ref.ctype]
@@ -294,9 +294,9 @@ cellIDAnno <- function(obj.seu, marker.lst = NULL, gset.len = 5, sig.cut = 2, sp
 #' obj.seu <- sctypeAnno(obj.seu, marker.lst)
 
 sctypeAnno <- function(obj.seu, marker.lst = NULL, tissue.type = 'Immune system', ...) {
-	system.file('modules', 'sc-type-master/R/auto_detect_tissue_type.R', package = 'scAnnoX') %>% source(.)
-	system.file('modules', 'sc-type-master/R/gene_sets_prepare.R', package = 'scAnnoX') %>% source(.)
-	system.file('modules', 'sc-type-master/R/sctype_score_.R', package = 'scAnnoX') %>% source(.)
+	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/auto_detect_tissue_type.R') %>% source(.)
+	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/gene_sets_prepare.R') %>% source(.)
+	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/sctype_score_.R') %>% source(.)
 	
 	marker.dbfile <- system.file('modules', 'sc-type-master/ScTypeDB_full.xlsx', package = 'scAnnoX')
 	if (is.null(marker.lst)) {

@@ -128,3 +128,27 @@ findMarkersBySeurat <- function(obj.seu, to.list = TRUE, top.k = NULL, ...) {
 	if (to.list) de.markers <- split(de.markers$gene, de.markers$cluster)	
 	return(de.markers)
 }
+
+
+#' commonClustering
+
+#' A function used for data preprocessing.
+#' @param obj Seurat object.
+#' @param res Default: 0.8.
+#' @return Seurat object.
+#' @export commonClustering
+#' 
+#' @examples
+#' obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') %>% readRDS(.)
+#' obj.seu <- commonClustering(obj.seu) 
+
+commonClustering <- function(obj, res = 0.8) {
+    obj <- NormalizeData(obj, normalization.method = "LogNormalize", scale.factor = 10000)
+    obj <- FindVariableFeatures(obj, selection.method = "vst", nfeatures = 2000, verbose = FALSE)
+    all.genes <- rownames(obj)
+    obj <- ScaleData(obj, features = all.genes, verbose = FALSE)
+    obj <- RunPCA(obj, features = VariableFeatures(object = pbmc), verbose = FALSE)
+    obj <- FindNeighbors(obj, dims = 1:30)
+    obj <- FindClusters(obj, resolution = res)
+    return(obj)
+}
