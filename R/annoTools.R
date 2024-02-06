@@ -185,55 +185,44 @@ scsorterAnno <- function(obj.seu, marker.lst, ...) {
 	return(obj.seu)
 }
 
-#' sccatchAnno
 
-#' Automated single-cell annotation using scCATCH (Shao et al., 2020). 
+#' sctypeAnno
+
+#' Automated single-cell annotation using sc.type (Ianevski et al., 2022).
 #' @param obj.seu Query Seurat object, which needs to be annotated.
-#' @param qry.cluster Specify cluster information of query Seurat object in meta.data slot. Default: idents.
-#' @param marker.lst A list contained maker genes for each cell type.
-#' @param species Species of query Seurat object data which needs to be annotated. Default: Human.
-#' @param ... More arguments can be assessed using the findcelltype function in the scCATCH package.
+#' @param marker.lst A list contained maker genes for each cell type. Default: NULL.
+#' @param tissue.type Please specify the tissue type when using the default marker database wrapped by the sc.type package. Default: Immune system.
+#' @param ... More arguments can be assessed using the sctype_score function in the sc.type package.
 #' @return Annotated Seurat object, predicted results are embedded into meta.data slot.
-#' @export sccatchAnno
-#' 
+#' @export sctypeAnno
+#'
 #' @examples
 #' obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') %>% readRDS(.)
 #' ref.obj <- system.file('data/test', 'ref.obj.rds', package = 'Biotools') %>% readRDS(.)
 #' marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
-#' obj.seu <- sccatchAnno(obj.seu, marker.lst)
-#' obj.seu <- sccatchAnno(obj.seu, marker.lst = NULL)
+#' obj.seu <- sctypeAnno(obj.seu, marker.lst)
 
-sccatchAnno <-function(obj.seu, marker.lst = NULL, qry.cluster = 'idents', species = c('Human', 'Mouse'), ...) {
-    test.expr <- GetAssayData(obj.seu, slot = "data") %>% as.matrix
-	if (qry.cluster == 'idents') clus.info <- Idents(obj.seu)
-	else clus.info <- obj.seu@meta.data[, qry.cluster]
-	data <- scCATCH::createscCATCH(data = test.expr, cluster = clus.info %>% as.vector)
-    
+sctypeAnno <- function(obj.seu, marker.lst = NULL, tissue.type = 'Immune system', ...) {
+	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/auto_detect_tissue_type.R') %>% source(.)
+	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/gene_sets_prepare.R') %>% source(.)
+	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/sctype_score_.R') %>% source(.)
+	
+	marker.dbfile <- system.file('modules', 'sc-type-master/ScTypeDB_full.xlsx', package = 'scAnnoX')
 	if (is.null(marker.lst)) {
-		cellmatch <- scCATCH::cellmatch
-		marker.db <- cellmatch[cellmatch$species == match.arg(species), ]
+		gs.list <- gene_sets_prepare(marker.dbfile, tissue.type)
 	} else {
-		marker.db <- collapseLisToFrame(marker.lst)	%>% 
-			`colnames<-`(c('celltype', 'gene')) %>% 
-			mutate(
-				species = 'Human', 
-				tissue = NA, 
-				cancer = 'Normal', 
-				condition = 'Normal', 
-				subtype1 = NA, 
-				subtype2 = NA, 
-				subtype3 = NA, 
-				resource = NA, 
-				pmid = NA
-			)
+		gs.neg <- lapply(names(marker.lst), function(xx) character(0)) %>% `names<-`(names(marker.lst))
+		gs.pos <- marker.lst
+		gs.list <- list(gs_positive = gs.pos, gs_negative = gs.neg)
 	}
-	obj <- scCATCH::findmarkergene(data, species = match.arg(species), if_use_custom_marker = TRUE, marker = marker.db)
-	pred.res <- scCATCH::findcelltype(obj)
-	obj.tmp <- RenameIdents(obj.seu, split(pred.res@celltype$cell_type, pred.res@celltype$cluster) %>% unlist(.))
-	obj.seu$scCATCH <- Idents(obj.tmp) %>% as.vector
-	return(obj.seu)
+    sc.expr <- GetAssayData(obj.seu) %>% as.matrix
+    es.max <- sctype_score(scRNAseqData = sc.expr, gs = gs.list$gs_positive, gs2 = gs.list$gs_negative, ...)
+    pred.res <- apply(es.max, 2, which.max) %>% rownames(es.max)[.]
+	obj.seu$scTypeAnno <- pred.res
+    return(obj.seu)
 }
-
+                         
+                         
 #' cellIDAnno
 
 #' Automated single-cell annotation using CellID (Ianevski et al., 2022).
@@ -275,44 +264,60 @@ cellIDAnno <- function(obj.seu, marker.lst = NULL, gset.len = 5, sig.cut = 2, sp
 	obj.seu$CellIDAnno.adj <- all.gs.pred.signif
 	return(obj.seu)
 }
+                     
+                         
+#' sccatchAnno
 
-
-#' sctypeAnno
-
-#' Automated single-cell annotation using sc.type (Ianevski et al., 2022).
+#' Automated single-cell annotation using scCATCH (Shao et al., 2020). 
 #' @param obj.seu Query Seurat object, which needs to be annotated.
-#' @param marker.lst A list contained maker genes for each cell type. Default: NULL.
-#' @param tissue.type Please specify the tissue type when using the default marker database wrapped by the sc.type package. Default: Immune system.
-#' @param ... More arguments can be assessed using the sctype_score function in the sc.type package.
+#' @param qry.cluster Specify cluster information of query Seurat object in meta.data slot. Default: idents.
+#' @param marker.lst A list contained maker genes for each cell type.
+#' @param species Species of query Seurat object data which needs to be annotated. Default: Human.
+#' @param ... More arguments can be assessed using the findcelltype function in the scCATCH package.
 #' @return Annotated Seurat object, predicted results are embedded into meta.data slot.
-#' @export sctypeAnno
-#'
+#' @export sccatchAnno
+#' 
 #' @examples
 #' obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') %>% readRDS(.)
 #' ref.obj <- system.file('data/test', 'ref.obj.rds', package = 'Biotools') %>% readRDS(.)
 #' marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
-#' obj.seu <- sctypeAnno(obj.seu, marker.lst)
+#' obj.seu <- sccatchAnno(obj.seu, marker.lst)
+#' obj.seu <- sccatchAnno(obj.seu, marker.lst = NULL)
 
-sctypeAnno <- function(obj.seu, marker.lst = NULL, tissue.type = 'Immune system', ...) {
-	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/auto_detect_tissue_type.R') %>% source(.)
-	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/gene_sets_prepare.R') %>% source(.)
-	system.file(package = 'scAnnoX') %>% file.path(., 'sc-type-master/R/sctype_score_.R') %>% source(.)
-	
-	marker.dbfile <- system.file('modules', 'sc-type-master/ScTypeDB_full.xlsx', package = 'scAnnoX')
+sccatchAnno <-function(obj.seu, marker.lst = NULL, qry.cluster = 'idents', species = c('Human', 'Mouse'), ...) {
+    system.file(package = 'scAnnoX') %>% file.path(., 'scCATCH-master') %>% load_all(.)
+    
+    test.expr <- GetAssayData(obj.seu, slot = "data") %>% as.matrix
+	if (qry.cluster == 'idents') clus.info <- Idents(obj.seu)
+	else clus.info <- obj.seu@meta.data[, qry.cluster]
+	data <- scCATCH::createscCATCH(data = test.expr, cluster = clus.info %>% as.vector)
+    
 	if (is.null(marker.lst)) {
-		gs.list <- gene_sets_prepare(marker.dbfile, tissue.type)
+		cellmatch <- scCATCH::cellmatch
+		marker.db <- cellmatch[cellmatch$species == match.arg(species), ]
 	} else {
-		gs.neg <- lapply(names(marker.lst), function(xx) character(0)) %>% `names<-`(names(marker.lst))
-		gs.pos <- marker.lst
-		gs.list <- list(gs_positive = gs.pos, gs_negative = gs.neg)
+		marker.db <- collapseLisToFrame(marker.lst)	%>% 
+			`colnames<-`(c('celltype', 'gene')) %>% 
+			mutate(
+				species = 'Human', 
+				tissue = NA, 
+				cancer = 'Normal', 
+				condition = 'Normal', 
+				subtype1 = NA, 
+				subtype2 = NA, 
+				subtype3 = NA, 
+				resource = NA, 
+				pmid = NA
+			)
 	}
-    sc.expr <- GetAssayData(obj.seu) %>% as.matrix
-    es.max <- sctype_score(scRNAseqData = sc.expr, gs = gs.list$gs_positive, gs2 = gs.list$gs_negative, ...)
-    pred.res <- apply(es.max, 2, which.max) %>% rownames(es.max)[.]
-	obj.seu$scTypeAnno <- pred.res
-    return(obj.seu)
+	obj <- scCATCH::findmarkergene(data, species = match.arg(species), if_use_custom_marker = TRUE, marker = marker.db)
+	pred.res <- scCATCH::findcelltype(obj)
+	obj.tmp <- RenameIdents(obj.seu, split(pred.res@celltype$cell_type, pred.res@celltype$cluster) %>% unlist(.))
+	obj.seu$scCATCH <- Idents(obj.tmp) %>% as.vector
+	return(obj.seu)
 }
-
+                         
+                         
 #' scinaAnno
 
 #‘ Automated single-cell annotation using SCINA (Zhang et al., 2018).
