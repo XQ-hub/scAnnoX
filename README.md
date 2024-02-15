@@ -63,6 +63,7 @@ pred.obj <- autoAnnoTools(
 ```
 
 Employed a multitude of single-cell annotation tools.
+
 Assembling a vector of diverse annotation tools and iteratively annotating the tools within the vector, we generate annotation results encompassing a variety of tools.
 ```R
 Idents(ref.obj) <- ref.obj$CellType
