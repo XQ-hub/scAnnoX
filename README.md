@@ -108,8 +108,7 @@ Show annotation results.
 acc <- apply(scAnnoX, 2, function(xx) sum(test.obj$CellType == xx) / ncol(test.obj))
 barplot(acc, las = 2 , col = rainbow(11))
 ```
-![Annotation results](vignettes/result.png)
-<img src="vignettes/result.png" alt="Annotation results" width="300" height="200">
+<img src="vignettes/result.png" alt="Annotation results" width="600" height="400">
 
 
 # Contributors
