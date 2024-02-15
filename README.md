@@ -51,7 +51,6 @@ pred.obj <- autoAnnoTools(
 scAnnoX was developed by Xiaoqian Huang. Please contact Xiaoqian Huang for any questions or suggestions.
 
 # scAnnoX
-# scAnnoX
 
 # SessionInfo
 ```r
