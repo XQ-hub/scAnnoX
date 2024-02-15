@@ -1,31 +1,50 @@
 # scAnnoX
 
 # scAnnoX - An R Package Integrating Multiple Public Tools for Single-Cell Annotation
-scAnnoX is an R package that integrates 10 different cell identity algorithms for single-cell sequencing data into a unified framework, and allows comparison between different algorithms according to experimental results. Among them, 10 algorithms include SingleR, Seurat, sciBet, scmap, CHETAH, scSorter, sc.type, cellID, scCATCH, SCINA. It is designed to assist researchers to analyze scRNA-seq data more efficiently, so that they can make more informed decisions among the complex selection of single cell identification algorithms, and more easily test, evaluate, and compare multiple algorithms in an integrated environment. The scAnnoX package is available at https://github.com/XQ-hub/scAnnoX.
+scAnnoX is an R package that integrates 10 different cell identity algorithms for single-cell sequencing data into a unified framework, and allows comparison between different algorithms according to experimental results. Among them, 10 algorithms include SingleR, Seurat, sciBet, scmap, CHETAH, scSorter, sc.type, cellID, scCATCH, SCINA. It is designed to assist researchers to analyze scRNA-seq data more efficiently, so that they can make more informed decisions among the complex selection of single cell identification algorithms, and more easily test, evaluate, and compare multiple algorithms in an integrated environment.
 
 ![scAnnoX](scAnnoX.png)
 
 # Install
-
+To install scAnnoX,we recommed using "devtools":
 ```R
+#install.packages("devtools")  
 devtools::install_github('XQ-hub/scAnnoX')
 ```
 
-# Usage
+# Prepare input data
 
 ```R
 library(scAnnoX)
 library(SingleCellExperiment)
 
-# A preprocessed dataset of type Seurat.
-test.obj <- readRDS('../scAnnoX/data/GSE81608.test.obj')
-ref.obj <- readRDS('../scAnnoX/data/GSE81608.ref.obj')
+# Import single cell profiles.
+test.obj <- readRDS('data/GSE81252.test.obj')
+ref.obj <- readRDS('data/GSE81252.ref.obj')
+```
 
+
+# Set parameters
+| Parameters   | Description |
+| ------------ | ------------------------------------------ |
+| obj.seu      | Seurat object, which needs to be annotated. |
+| ref.obj      | Seurat object, only when used with refernce-based tools. Default: NULL.  |
+| ref.ctype    | The cell type column in ref.obj, only when used with refernce-based tools. Default: NULL.   |
+| marker.lst   | A list contained maker genes for each cell type for marker based tool.   |
+| method       | A vector of automated annotation tools.   |
+| select.marker| Specify method for inferring markers for each subset. Default: Seurat.  |
+| top.k        | Top k expressed genes of each subset remained. Default: NULL.  |
+| strategy     | Category of single cell annotation tool.   |
+
+
+# Single cell annotation via scAnnoX
+
+```R
 # Using SingleR as an example.
 pred.obj <- autoAnnoTools(
     test.obj,
     ref.obj = ref.obj,
-    ref.ctype = 'ActureAnno',
+    ref.ctype = 'CellType',
     marker.lst = marker.lst,
     method = 'SingleR',
     select.marker = 'Seurat',

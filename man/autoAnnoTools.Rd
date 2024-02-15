@@ -18,7 +18,7 @@ autoAnnoTools(
 )
 }
 \arguments{
-\item{obj.seu}{Query Seurat object, which needs to be annotated.}
+\item{obj.seu}{Seurat object, which needs to be annotated.}
 
 \item{ref.obj}{Seurat object, only when used with refernce-based tools. Default: NULL.}
 

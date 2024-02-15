@@ -1,7 +1,7 @@
 #' @title autoAnnoTools
 
 #' @description Automated single-cell annotation using publicly available tools.
-#' @param obj.seu Query Seurat object, which needs to be annotated.
+#' @param obj.seu Seurat object, which needs to be annotated.
 #' @param ref.obj Seurat object, only when used with refernce-based tools. Default: NULL.
 #' @param marker.lst A list contained maker genes for each cell type for marker based tool. 
 #' Notably, ref.obj and marker.lst are antagonistic, and must be provide one. Default: NULL.
@@ -50,15 +50,15 @@ autoAnnoTools <- function(
 }
 
 
-#' @title autoAnnoResult
+#' @title annoResult
 
 #' @description Integrate the prediction results of the algorithm in the autoAnnoTools function.
 #' @param anno The predicted results of the algorithm in the autoAnnoTools function.
 #' @return Seurat object with consolidated results.
-#' @export autoAnnoResult
+#' @export annoResult
 #' 
  
-autoAnnoResult <- function(anno) {
+annoResult <- function(anno) {
     if(! type(anno) == 'data.frame') anno <- as.data.frame(anno)
     anno$scAnnoX <- apply(anno.res, 1, function(row) names(which.max(table(row)/ncol(anno))))
     return(anno)
