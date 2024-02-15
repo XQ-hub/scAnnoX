@@ -2,8 +2,7 @@
 
 # scAnnoX - An R Package Integrating Multiple Public Tools for Single-Cell Annotation
 scAnnoX is an R package that integrates 10 different cell identity algorithms for single-cell sequencing data into a unified framework, and allows comparison between different algorithms according to experimental results. Among them, 10 algorithms include SingleR, Seurat, sciBet, scmap, CHETAH, scSorter, sc.type, cellID, scCATCH, SCINA. It is designed to assist researchers to analyze scRNA-seq data more efficiently, so that they can make more informed decisions among the complex selection of single cell identification algorithms, and more easily test, evaluate, and compare multiple algorithms in an integrated environment.
-
-![scAnnoX](scAnnoX.png)
+![scAnnoX](inst/scAnnoX.png)
 
 # Install
 To install scAnnoX,we recommed using "devtools":
@@ -13,16 +12,13 @@ devtools::install_github('XQ-hub/scAnnoX')
 ```
 
 # Prepare input data
-
 ```R
 library(scAnnoX)
 library(SingleCellExperiment)
-
 # Import single cell profiles.
-test.obj <- readRDS('data/GSE81252.test.obj')
-ref.obj <- readRDS('data/GSE81252.ref.obj')
+test.obj <- readRDS('data/test.obj')
+ref.obj <- readRDS('data/ref.obj')
 ```
-
 
 # Set parameters
 | Parameters   | Description |
@@ -36,11 +32,10 @@ ref.obj <- readRDS('data/GSE81252.ref.obj')
 | top.k        | Top k expressed genes of each subset remained. Default: NULL.  |
 | strategy     | Category of single cell annotation tool.   |
 
-
 # Single cell annotation via scAnnoX
-
+Exclusively employed a singular single-cell annotation tool.
 ```R
-# Using SingleR as an example.
+# Take one of the refernce-based annotation tools for example.
 pred.obj <- autoAnnoTools(
     test.obj,
     ref.obj = ref.obj,
@@ -51,8 +46,7 @@ pred.obj <- autoAnnoTools(
     top.k = 30,
     strategy = 'refernce-based'
 ) 
-
-# Using SCINA as an example.
+# Take one of the marker-based annotation tools for example.
 Idents(ref.obj) <- ref.obj$CellType
 marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
 pred.obj <- autoAnnoTools(
@@ -67,14 +61,61 @@ pred.obj <- autoAnnoTools(
 ) 
 ```
 
-# Contributors
+Employed a multitude of single-cell annotation tools.
+Assembling a vector of diverse annotation tools and iteratively annotating the tools within the vector, we generate annotation results encompassing a variety of tools.
+```R
+Idents(ref.obj) <- ref.obj$CellType
+marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
 
+anno.tools <- c('SingleR', 'Seurat', 'sciBet', 'scmap', 'CHETAH', 'scSorter', 'sc.type', 'cellID', 'scCATCH', 'SCINA')
+marker.based <- c('scSorter', 'sc.type', 'cellID', 'scCATCH', 'SCINA')
+
+anno.res <- lapply(anno.tools, function(tool) {
+    print(sprintf('Running %s...\n', tool))
+    bool.val <- ifelse(tool %in% marker.based, 'marker-based', 'refernce-based')
+    
+    tmp.obj <- autoAnnoTools(
+        test.obj,
+        ref.obj = ref.obj,
+        ref.ctype = 'CellType',
+        marker.lst = marker.lst,
+        method = tool,
+        select.marker = 'Seurat',
+        top.k = 30,
+        strategy = bool.val
+    ) 
+    tmp.obj@meta.data[, ncol(tmp.obj@meta.data)]
+}) %>% do.call(cbind, .) %>% `colnames<-`(anno.tools)
+
+scAnnoX <- annoResult(anno.res)
+head(scAnnoX)
+
+A data.frame: 6 × 11
+SingleR	Seurat	sciBet	scmap	CHETAH	scSorter	sc.type	cellID	scCATCH	SCINA	scAnnoX
+<chr>	<chr>	<chr>	<chr>	<chr>	<chr>	<chr>	<chr>	<chr>	<chr>	<chr>
+1	HE	HE	HE	HE	HE	HE	HE	unassigned	HE	HE	HE
+2	EC	EC	EC	EC	EC	EC	EC	EC	EC	EC	EC
+3	HE	HE	HE	HE	HE	HE	HE	HE	HE	HE	HE
+4	EC-LB	EC-LB	EC-LB	EC-LB	Node3	EC-LB	EC-LB	EC-LB	EC-LB	EC-LB	EC-LB
+5	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB	MC-LB
+6	HE-LB	HE	HE-LB	unassigned	Node4	HE	HE	unassigned	HE-LB	HE	HE
+
+```
+
+# Visualization
+Show annotation results.
+```R
+acc <- apply(scAnnoX, 2, function(xx) sum(test.obj$CellType == xx) / ncol(test.obj))
+options(repr.plot.width = 8, repr.plot.height = 5)
+barplot(acc, las = 2 , col = rainbow(11))
+```
+![Annotation results](vignettes/result.png)
+
+# Contributors
 scAnnoX was developed by Xiaoqian Huang. Please contact Xiaoqian Huang for any questions or suggestions.
 
-
-
 # SessionInfo
-```r
+```R
 R version 4.2.2 (2022-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
