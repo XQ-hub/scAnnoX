@@ -1,5 +1,3 @@
-# scAnnoX
-
 # scAnnoX - An R Package Integrating Multiple Public Tools for Single-Cell Annotation
 scAnnoX is an R package that integrates 10 different cell identity algorithms for single-cell sequencing data into a unified framework, and allows comparison between different algorithms according to experimental results. Among them, 10 algorithms include SingleR, Seurat, sciBet, scmap, CHETAH, scSorter, sc.type, cellID, scCATCH, SCINA. It is designed to assist researchers to analyze scRNA-seq data more efficiently, so that they can make more informed decisions among the complex selection of single cell identification algorithms, and more easily test, evaluate, and compare multiple algorithms in an integrated environment.
 ![scAnnoX](inst/scAnnoX.png)
@@ -15,6 +13,7 @@ devtools::install_github('XQ-hub/scAnnoX')
 ```R
 library(scAnnoX)
 library(SingleCellExperiment)
+
 # Import single cell profiles.
 test.obj <- readRDS('data/test.obj')
 ref.obj <- readRDS('data/ref.obj')
@@ -46,6 +45,7 @@ pred.obj <- autoAnnoTools(
     top.k = 30,
     strategy = 'refernce-based'
 ) 
+
 # Take one of the marker-based annotation tools for example.
 Idents(ref.obj) <- ref.obj$CellType
 marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
@@ -106,10 +106,11 @@ SingleR	Seurat	sciBet	scmap	CHETAH	scSorter	sc.type	cellID	scCATCH	SCINA	scAnnoX
 Show annotation results.
 ```R
 acc <- apply(scAnnoX, 2, function(xx) sum(test.obj$CellType == xx) / ncol(test.obj))
-options(repr.plot.width = 8, repr.plot.height = 5)
 barplot(acc, las = 2 , col = rainbow(11))
 ```
 ![Annotation results](vignettes/result.png)
+<img src="vignettes/result.png" alt="Annotation results" width="300" height="200">
+
 
 # Contributors
 scAnnoX was developed by Xiaoqian Huang. Please contact Xiaoqian Huang for any questions or suggestions.
