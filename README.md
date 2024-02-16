@@ -16,8 +16,8 @@ library(scAnnoX)
 library(SingleCellExperiment)
 
 # Import single cell profiles.
-test.obj <- readRDS('data/test.obj')
-ref.obj <- readRDS('data/ref.obj')
+test.obj <- system.file('data', 'test.rds', package = 'scAnnoX') %>% readRDS(.)
+ref.obj <- system.file('data', 'ref.rds', package = 'scAnnoX') %>% readRDS(.)
 ```
 
 # Set parameters
