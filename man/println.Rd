@@ -22,5 +22,5 @@ println
 Print prompt message.
 }
 \examples{
-println('Begin analysis ->', verbose = TRUE, status = 'INFO', 'example')
+println("Begin analysis ->", verbose = TRUE, status = "INFO", "example")
 }

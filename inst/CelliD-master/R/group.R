@@ -2,7 +2,7 @@
 ##  Group Coordinates                                                       ####
 
 #' Centroids Coordinates
-#' 
+#'
 #' @description Centroids calculation for a given group of cells defined for instance by cell type/ condition.
 #'
 #' @param X  Seurat or SingleCellExperiment object, alternatively a matrix.
@@ -90,7 +90,7 @@ GetGroupCoordinates.SingleCellExperiment <-
 ##  Group Gene Euclidean Distances                                          ####
 
 #' Centroids-Genes distances
-#' 
+#'
 #' @description Distance calculation between genes and group of cells centroids.
 #'
 #' @param X  Seurat or SingleCellExperiment object, alternatively a matrix.
@@ -129,8 +129,7 @@ GetGroupGeneDistance.Seurat <-
             )
         if (is.null(features)) {
             genes_coordinates <- Loadings(X, reduction)[, dims]
-        }
-        else {
+        } else {
             genes_coordinates <- Loadings(X, reduction)[features, dims]
         }
         GroupGeneDistance <- t(pairDist(genes_coordinates, group_coordinates))
@@ -158,8 +157,7 @@ GetGroupGeneDistance.SingleCellExperiment <-
         if (is.null(features)) {
             genes_coordinates <-
                 attr(reducedDim(X, reduction), "genesCoordinates")[, dims]
-        }
-        else {
+        } else {
             genes_coordinates <-
                 attr(reducedDim(X, reduction), "genesCoordinates")[features, dims]
         }
@@ -260,8 +258,8 @@ GetGroupGeneSet.Seurat <-
             )
         GroupGeneSet <-
             lapply(GroupGeneRanking, function(x) {
-                  names(head(x, n.features))
-              })
+                names(head(x, n.features))
+            })
         return(GroupGeneSet)
     }
 
@@ -279,8 +277,8 @@ GetGroupGeneSet.SingleCellExperiment <-
             )
         GroupGeneSet <-
             lapply(GroupGeneRanking, function(x) {
-                  names(head(x, n.features))
-              })
+                names(head(x, n.features))
+            })
         return(GroupGeneSet)
     }
 

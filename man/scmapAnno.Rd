@@ -31,7 +31,7 @@ Annotated Seurat object, predicted results are embedded into meta.data slot.
 scmapAnno
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
-ref.obj <- system.file('data/test', 'ref.obj.rds', package = 'Biotools') \%>\% readRDS(.)
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
+ref.obj <- system.file("data/test", "ref.obj.rds", package = "Biotools") \%>\% readRDS(.)
 obj.seu <- scmapAnno(obj.seu, ref.obj)
 }

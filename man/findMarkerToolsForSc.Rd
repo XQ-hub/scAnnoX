@@ -35,6 +35,6 @@ findMarkerToolsForSc
 Find markers for subsets using publicly avaiable tools on the basis of single-cell data.
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
-results <- findMarkerToolsForSc(obj.seu, to.list = TRUE, method = 'Seurat', logfc.threshold = 0.25, min.pct = 0.25)
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
+results <- findMarkerToolsForSc(obj.seu, to.list = TRUE, method = "Seurat", logfc.threshold = 0.25, min.pct = 0.25)
 }

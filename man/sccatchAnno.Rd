@@ -32,8 +32,8 @@ sccatchAnno
 Automated single-cell annotation using scCATCH (Shao et al., 2020).
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
-ref.obj <- system.file('data/test', 'ref.obj.rds', package = 'Biotools') \%>\% readRDS(.)
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
+ref.obj <- system.file("data/test", "ref.obj.rds", package = "Biotools") \%>\% readRDS(.)
 marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
 obj.seu <- sccatchAnno(obj.seu, marker.lst)
 obj.seu <- sccatchAnno(obj.seu, marker.lst = NULL)

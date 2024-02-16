@@ -1,10 +1,10 @@
 #' Run HyperGeometric Test on cells
-#' 
-#' @description RunCellHGT calculates the gene signatures for each cells and performs hypergeometric 
+#'
+#' @description RunCellHGT calculates the gene signatures for each cells and performs hypergeometric
 #' test against a user defined gene signatures/pathways (named list of genes).
-#' It returns a score of enrichment in the form of -log10 pvalue(see log.trans argument). 
+#' It returns a score of enrichment in the form of -log10 pvalue(see log.trans argument).
 #' The obtained matrix can then be integrated in Seurat or SingleCellExperiment object.
-#' It can notably be used with cell type signatures to predict cell types or with functionnal pathways 
+#' It can notably be used with cell type signatures to predict cell types or with functionnal pathways
 #'
 #' @param X Seurat or SingleCellExperiment object with mca performed
 #' @param pathways geneset to perform hypergeometric test on (named list of genes)
@@ -48,7 +48,7 @@ RunCellHGT.SingleCellExperiment <-
         pathways <- pathways[vapply(pathways, function(x) length(x) >= minSize, FUN.VALUE = logical(1))]
         nPathEnd <- length(pathways)
         nFiltPath <- nPathInit - nPathEnd
-        if(nPathEnd == 0){
+        if (nPathEnd == 0) {
             stop(glue("All pathways have less than {minSize} features in common with the data"))
         }
         message(glue("{nPathEnd} pathways kept for hypergeometric test out of {nPathInit}, {nFiltPath} filtered as less than {minSize} features was present in the data"))
@@ -106,7 +106,7 @@ RunCellHGT.Seurat <-
         pathways <- pathways[vapply(pathways, function(x) length(x) >= minSize, FUN.VALUE = logical(1))]
         nPathEnd <- length(pathways)
         nFiltPath <- nPathInit - nPathEnd
-        if(nPathEnd == 0){
+        if (nPathEnd == 0) {
             stop(glue("All pathways have less than {minSize} features in common with the data"))
         }
         message(glue("{nPathEnd} pathways kept for hypergeometric test out of {nPathInit}, {nFiltPath} filtered as less than {minSize} features was present in the data"))

@@ -49,7 +49,8 @@ createscCATCH <- function(data, cluster) {
 #' @importFrom stats wilcox.test
 #' @export
 
-findmarkergene <- function(object, species = NULL, cluster = "All", if_use_custom_marker = FALSE,
+findmarkergene <- function(
+    object, species = NULL, cluster = "All", if_use_custom_marker = FALSE,
     marker = NULL, cancer = "Normal", tissue = NULL, use_method = "1", comp_cluster = NULL, cell_min_pct = 0.25, logfc = 0.25,
     pvalue = 0.05, verbose = TRUE) {
     if (!is(object, "scCATCH")) {
@@ -64,7 +65,7 @@ findmarkergene <- function(object, species = NULL, cluster = "All", if_use_custo
     if (!if_use_custom_marker) {
         marker <- .filter_marker(marker, species, cancer, tissue)
     }
-    marker <- marker[marker$gene %in% rownames(ndata),]
+    marker <- marker[marker$gene %in% rownames(ndata), ]
     if (length(unique(marker$gene)) < 2) {
         stop("No matched potential marker genes in the matrix!")
     }
@@ -89,8 +90,10 @@ findmarkergene <- function(object, species = NULL, cluster = "All", if_use_custo
     if (nrow(clu_marker) > 0) {
         object@markergene <- clu_marker
     }
-    para <- list(species = species, cluster = cluster, if_use_custom_marker = if_use_custom_marker, cancer = cancer, tissue = tissue,
-        use_method = use_method, cell_min_pct = cell_min_pct, logfc = logfc, pvalue = pvalue)
+    para <- list(
+        species = species, cluster = cluster, if_use_custom_marker = if_use_custom_marker, cancer = cancer, tissue = tissue,
+        use_method = use_method, cell_min_pct = cell_min_pct, logfc = logfc, pvalue = pvalue
+    )
     object@para <- para
     object@marker <- marker
     return(object)
@@ -118,8 +121,10 @@ findcelltype <- function(object, verbose = TRUE) {
     # Evidence-based scoring and annotation
     Sys.sleep(2)
     clu_num <- unique(markergene$cluster)
-    pb <- progress::progress_bar$new(format = "[:bar] Finished::percent Time :elapsedfull", total = length(clu_num), clear = FALSE, width = 60,
-        complete = "+", incomplete = "-")
+    pb <- progress::progress_bar$new(
+        format = "[:bar] Finished::percent Time :elapsedfull", total = length(clu_num), clear = FALSE, width = 60,
+        complete = "+", incomplete = "-"
+    )
     clu_ann_res <- NULL
     for (i in 1:length(clu_num)) {
         cellsubtype1 <- "NA"
@@ -199,9 +204,11 @@ findcelltype <- function(object, verbose = TRUE) {
             }
         }
         PMID <- d1
-        clu_ann <- data.frame(cluster = clu_num[i], cluster_marker = clu_markergene, cellsubtype3 = cellsubtype3, cellsubtype2 = cellsubtype2,
+        clu_ann <- data.frame(
+            cluster = clu_num[i], cluster_marker = clu_markergene, cellsubtype3 = cellsubtype3, cellsubtype2 = cellsubtype2,
             cellsubtype1 = cellsubtype1, cell_type = celltype, celltype_score = celltype_score, celltype_related_marker = clu_marker,
-            PMID = PMID, stringsAsFactors = FALSE)
+            PMID = PMID, stringsAsFactors = FALSE
+        )
         clu_ann_res <- rbind(clu_ann_res, clu_ann)
         if (verbose) {
             pb$tick()

@@ -13,6 +13,10 @@
 #' @aliases scCATCH-class
 #' @exportClass scCATCH
 
-setClass("scCATCH", representation(data = "list", meta = "data.frame", para = "list", markergene = "data.frame", celltype = "data.frame",
-    marker = "data.frame"), prototype(data = list(), meta = data.frame(), para = list(), markergene = data.frame(), celltype = data.frame(),
-    marker = data.frame()))
+setClass("scCATCH", representation(
+    data = "list", meta = "data.frame", para = "list", markergene = "data.frame", celltype = "data.frame",
+    marker = "data.frame"
+), prototype(
+    data = list(), meta = data.frame(), para = list(), markergene = data.frame(), celltype = data.frame(),
+    marker = data.frame()
+))

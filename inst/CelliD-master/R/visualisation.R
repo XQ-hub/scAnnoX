@@ -1,8 +1,8 @@
 #' Seurat DimPlot for MCA like Dimensionality Reduction
 #'
 #' @description Small modification of the regular Seurat DimPlot function to enable plotting features for mca like dimensionality reduction.
-#' Allows to represent a set of genes of interest on top of the regular cell scatter plot. 
-#' The label of the genes can be iverlayed also but it is recommended to plot less than 50 genes label as it can overcrowd the plot severely.     
+#' Allows to represent a set of genes of interest on top of the regular cell scatter plot.
+#' The label of the genes can be iverlayed also but it is recommended to plot less than 50 genes label as it can overcrowd the plot severely.
 #'
 #' @param X a Seurat object
 #' @param reduction Which dimensionality reduction to use. If not specified, searches for mca.
@@ -78,9 +78,9 @@ DimPlotMC <-
 #' Scater plotReducedDim for MCA like dimensionality Reduction
 #'
 #' @description Small modification of the Scater plotReducedDim function to enable plotting features for mca like dimensionality reduction.
-#' Allows to represent a set of genes of interest on top of the regular cell scatter plot. 
-#' The label of the genes can be iverlayed also but it is recommended to plot less than 50 genes label as it can overcrowd the plot severely.    
-#' 
+#' Allows to represent a set of genes of interest on top of the regular cell scatter plot.
+#' The label of the genes can be iverlayed also but it is recommended to plot less than 50 genes label as it can overcrowd the plot severely.
+#'
 #' @param X a Single Cell Experiment Object
 #' @param reduction Which dimensionality reduction to use. If not specified, searches for mca.
 #' @param dims Dimensions to plot, must be a two-length numeric vector specifying x- and y-dimensions

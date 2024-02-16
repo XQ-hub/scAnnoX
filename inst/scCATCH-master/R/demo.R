@@ -5,7 +5,6 @@
 #' @return A demo data matrix.
 #' @export demo_data
 #' @examples data_demo <- demo_data()
-
 demo_data <- function() {
     cellname <- paste0("cell", 1:6)
     genename <- c("A1BG", "A2M", "A2MP", "NAT1", "NAT2", "NAT20")
@@ -23,7 +22,6 @@ demo_data <- function() {
 #' @return A demo geneinfo data.frame.
 #' @export demo_geneinfo
 #' @examples geneinfo_demo <- demo_geneinfo()
-
 demo_geneinfo <- function() {
     gene1 <- c("A1BG", "A1BG", "A2MP1", "Aco1")
     gene2 <- c("A1B", "ABG", "A2MP", "Aco")
@@ -39,7 +37,6 @@ demo_geneinfo <- function() {
 #' @return A demo marker data.frame.
 #' @export demo_marker
 #' @examples markers_demo <- demo_marker()
-
 demo_marker <- function() {
     species <- c("Human", "Human", "Human", "Human")
     tissues <- c("Liver", "Liver", "Liver", "Liver")
@@ -52,7 +49,9 @@ demo_marker <- function() {
     genes <- c("CD4", "CD8A", "ABCG1", "ACP5")
     resources <- c("Experiment", "Experiment", "Single-cell sequencing", "Single-cell sequencing")
     pmid <- c("27781378", "27781378", "28622514", "28622514")
-    markers <- data.frame(species = species, tissue = tissues, cancer = cancers, condition = conditions, subtype1 = subtype1,
-        subtype2 = subtype2, subtype3 = subtype3, celltype = celltype, gene = genes, resource = resources, pmid = pmid, stringsAsFactors = FALSE)
+    markers <- data.frame(
+        species = species, tissue = tissues, cancer = cancers, condition = conditions, subtype1 = subtype1,
+        subtype2 = subtype2, subtype3 = subtype3, celltype = celltype, gene = genes, resource = resources, pmid = pmid, stringsAsFactors = FALSE
+    )
     return(markers)
 }

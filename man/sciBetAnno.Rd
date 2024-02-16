@@ -25,7 +25,7 @@ sciBetAnno
 Automated single-cell annotation using sciBet (Stuart et al., 2019).
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
-ref.obj <- system.file('data/test', 'ref.obj.rds', package = 'Biotools') \%>\% readRDS(.)
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
+ref.obj <- system.file("data/test", "ref.obj.rds", package = "Biotools") \%>\% readRDS(.)
 obj.seu <- sciBetAnno(obj.seu, ref.obj)
 }

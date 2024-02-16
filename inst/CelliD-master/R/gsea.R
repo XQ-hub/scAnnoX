@@ -195,8 +195,8 @@ RunGroupGSEA.Seurat <-
             )
         GroupGeneRanking <-
             lapply(GroupGeneRanking, function(i) {
-                  (i + 0.1)^-1
-              })
+                (i + 0.1)^-1
+            })
         gseaResultsAll <- lapply(GroupGeneRanking, function(x,
                                                             pathways,
                                                             nperm,
@@ -250,8 +250,8 @@ RunGroupGSEA.SingleCellExperiment <-
             )
         GroupGeneRanking <-
             lapply(GroupGeneRanking, function(i) {
-                  (i + 0.1)^-1
-              })
+                (i + 0.1)^-1
+            })
         gseaResultsAll <- lapply(GroupGeneRanking, function(x,
                                                             pathways,
                                                             features,
@@ -276,7 +276,7 @@ RunGroupGSEA.SingleCellExperiment <-
 
 
 #' Get Matrix from Enrichment Results
-#' 
+#'
 #' Extract enrcihment score Matrix from RunGSEA functions.
 #'
 #' @param X an enrichment results obtained by RunGroupGSEA or RunCellGSEA
@@ -327,8 +327,8 @@ calcGseaStatCumulativeBatch <-
 #'   \item leadingEdge -- vector with indexes of leading edge genes that drive the enrichment, see \url{http://software.broadinstitute.org/gsea/doc/GSEAUserGuideTEXT.htm#_Running_a_Leading}.
 #' }
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' seuratPbmc <- RunMCA(seuratPbmc, nmcs = 5)
 #' ranking <- GetCellGeneRanking(seuratPbmc, reduction = "mca", dims = 1:5)
 #' fgseaCelliD(pathways = Hallmark, stats = ranking[[1]])

@@ -1,6 +1,6 @@
 #' Check for CelliD arguments
-#' 
-#' @description Performs multiple check of consistency of the argument provided by the user for different CelliD functions. 
+#'
+#' @description Performs multiple check of consistency of the argument provided by the user for different CelliD functions.
 #' It notably check if the provided features or cells name ar e actually contained in the high level object.
 #'
 #' @param X Seurat or SingleCell Experiment Object
@@ -41,8 +41,7 @@ checkCelliDArg.Seurat <-
         # feature check -----------------------------------------------------------
         if (is.null(features)) {
             features <- rownames(Loadings(X, reduction))
-        }
-        else {
+        } else {
             Tfeatures <- rownames(Loadings(X, reduction))
             featureCheck <- features %in% Tfeatures
             if (!all(featureCheck)) {
@@ -60,8 +59,7 @@ checkCelliDArg.Seurat <-
                     )
                 if (featuresMenu == 1) {
                     features <- matchingFeatures
-                }
-                else {
+                } else {
                     stop("function aborted by user")
                 }
             }
@@ -85,8 +83,7 @@ checkCelliDArg.Seurat <-
                     )
                 if (cellsMenu == 1) {
                     cells <- matchingcells
-                }
-                else {
+                } else {
                     stop("function aborted by user")
                 }
             }
@@ -100,8 +97,7 @@ checkCelliDArg.Seurat <-
             if (group.by %in% colnames(X@meta.data)) {
                 group.by.vec <- X@meta.data[[group.by]]
                 names(group.by.vec) <- rownames(X@meta.data)
-            }
-            else {
+            } else {
                 stop(glue(
                     "{group.by} column not present in seurat object meta.data"
                 ))
@@ -147,8 +143,7 @@ checkCelliDArg.SingleCellExperiment <-
         # feature check -----------------------------------------------------------
         if (is.null(features)) {
             features <- rownames(featureEmb)
-        }
-        else {
+        } else {
             Tfeatures <- rownames(featureEmb)
             featureCheck <- features %in% Tfeatures
             if (!all(featureCheck)) {
@@ -166,8 +161,7 @@ checkCelliDArg.SingleCellExperiment <-
                     )
                 if (featuresMenu == 1) {
                     features <- matchingFeatures
-                }
-                else {
+                } else {
                     stop("function aborted by user")
                 }
             }
@@ -191,8 +185,7 @@ checkCelliDArg.SingleCellExperiment <-
                     )
                 if (cellsMenu == 1) {
                     cells <- matchingcells
-                }
-                else {
+                } else {
                     stop("function aborted by user")
                 }
             }
@@ -206,8 +199,7 @@ checkCelliDArg.SingleCellExperiment <-
             if (group.by %in% colnames(colData(X))) {
                 group.by.vec <- colData(X)[[group.by]]
                 names(group.by.vec) <- rownames(colData(X))
-            }
-            else {
+            } else {
                 stop(
                     glue(
                         "{group.by} column not present in SingleCellExperiment object colData"

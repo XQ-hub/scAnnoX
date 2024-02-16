@@ -1,8 +1,8 @@
 #' Distance Calculation
 #'
 #' @description Small intermediate function for euclidean distance calculation between
-#' MCA feature coordinates and cell coordinates. Due to MCA pseudo barycentric relationship, 
-#' the closer a gene g is to a cell c, the more specific to such a cell it can be considered. 
+#' MCA feature coordinates and cell coordinates. Due to MCA pseudo barycentric relationship,
+#' the closer a gene g is to a cell c, the more specific to such a cell it can be considered.
 #'
 #' @param X Seurat or SingleCell Experiment Object
 #' @param reduction Which dimensionality reduction to use, must be based on MCA.
@@ -60,7 +60,7 @@ GetCellGeneDistance.SingleCellExperiment <- function(X, reduction = "MCA", dims,
 
 #' Ranking Extraction
 #'
-#' @description Intermediate function for ranking extraction from Cell Gene Distance Matrix. 
+#' @description Intermediate function for ranking extraction from Cell Gene Distance Matrix.
 #' Genes are ordered from the most specific to the least specific to the cell according to their euclidean distances.
 #' Value indicates the euclidean distances between the cell and the genes in the MCA coordinates.
 #'

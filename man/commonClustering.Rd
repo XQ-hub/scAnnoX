@@ -20,6 +20,6 @@ commonClustering
 A function used for data preprocessing.
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
-obj.seu <- commonClustering(obj.seu) 
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
+obj.seu <- commonClustering(obj.seu)
 }

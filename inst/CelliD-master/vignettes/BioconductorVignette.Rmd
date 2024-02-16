@@ -27,8 +27,8 @@ CelliD is based on R version >= 4.1. It contains dependencies with several CRAN 
 
 To install CelliD, set the repositories option to enable downloading Bioconductor dependencies:
 ```{r Installation, eval = FALSE}
-if(!require("tidyverse")) install.packages("tidyverse")
-if(!require("ggpubr")) install.packages("ggpubr")
+if (!require("tidyverse")) install.packages("tidyverse")
+if (!require("ggpubr")) install.packages("ggpubr")
 BiocManager::install("CelliD")
 ```
 ## Common installation issues
@@ -41,7 +41,7 @@ macOS users might experience installation issues related to Gfortran library. To
 ```{r library load, message=FALSE}
 library(CelliD)
 library(tidyverse) # general purpose library for data handling
-library(ggpubr) #library for plotting
+library(ggpubr) # library for plotting
 ```
 
 ## Load Data
@@ -49,10 +49,10 @@ library(ggpubr) #library for plotting
 To illustrate CelliD usage we will use throughout this vignette two publicly available pancreas single-cell RNA-seq data sets provided in [Baron et al. 2016](https://doi.org/10.1016/j.cels.2016.08.011) and [Segerstolpe et al. 2016](https://doi.org/10.1016/j.cmet.2016.08.020). 
 We provide here for convenience the R objects with the raw counts gene expression matrices and associated metadata
 ```{r download data}
-#read data
-BaronMatrix   <- readRDS(url("https://storage.googleapis.com/cellid-cbl/BaronMatrix.rds"))
+# read data
+BaronMatrix <- readRDS(url("https://storage.googleapis.com/cellid-cbl/BaronMatrix.rds"))
 BaronMetaData <- readRDS(url("https://storage.googleapis.com/cellid-cbl/BaronMetaData.rds"))
-SegerMatrix   <- readRDS(url("https://storage.googleapis.com/cellid-cbl/SegerstolpeMatrix.rds"))
+SegerMatrix <- readRDS(url("https://storage.googleapis.com/cellid-cbl/SegerstolpeMatrix.rds"))
 SegerMetaData <- readRDS(url("https://storage.googleapis.com/cellid-cbl/SegerstolpeMetaData2.rds"))
 ```
 
@@ -65,8 +65,8 @@ While CelliD can handle all types of genes, we recommend restricting the analysi
 ```{r preprocessing1, message=FALSE}
 # Restricting to protein-coding genes
 data("HgProteinCodingGenes")
-BaronMatrixProt <- BaronMatrix[rownames(BaronMatrix) %in% HgProteinCodingGenes,]
-SegerMatrixProt <- SegerMatrix[rownames(SegerMatrix) %in% HgProteinCodingGenes,]
+BaronMatrixProt <- BaronMatrix[rownames(BaronMatrix) %in% HgProteinCodingGenes, ]
+SegerMatrixProt <- SegerMatrix[rownames(SegerMatrix) %in% HgProteinCodingGenes, ]
 ```
 
 ## Data input formats
@@ -108,14 +108,13 @@ In the previous plot we colored cells according to the pre-established cell type
 
 For the sake of comparisson, state-of-the-art dimensionality reduction techniques such as PCA, UMAP and tSNE can be obtained as follows:
 ```{r Std Seurat}
-
 Baron <- RunPCA(Baron, features = rownames(Baron))
 Baron <- RunUMAP(Baron, dims = 1:30)
 Baron <- RunTSNE(Baron, dims = 1:30)
-PCA  <- DimPlot(Baron, reduction = "pca", group.by = "cell.type")  + ggtitle("PCA") + theme(legend.text = element_text(size =10), aspect.ratio = 1)
-tSNE <- DimPlot(Baron, reduction = "tsne", group.by = "cell.type")+ ggtitle("tSNE") + theme(legend.text = element_text(size =10), aspect.ratio = 1)
-UMAP <- DimPlot(Baron, reduction = "umap", group.by = "cell.type") + ggtitle("UMAP") + theme(legend.text = element_text(size =10), aspect.ratio = 1)
-MCA <- DimPlot(Baron, reduction = "mca", group.by = "cell.type")  + ggtitle("MCA") + theme(legend.text = element_text(size =10), aspect.ratio = 1)
+PCA <- DimPlot(Baron, reduction = "pca", group.by = "cell.type") + ggtitle("PCA") + theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+tSNE <- DimPlot(Baron, reduction = "tsne", group.by = "cell.type") + ggtitle("tSNE") + theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+UMAP <- DimPlot(Baron, reduction = "umap", group.by = "cell.type") + ggtitle("UMAP") + theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+MCA <- DimPlot(Baron, reduction = "mca", group.by = "cell.type") + ggtitle("MCA") + theme(legend.text = element_text(size = 10), aspect.ratio = 1)
 ggarrange(PCA, MCA, common.legend = TRUE, legend = "top")
 ggarrange(tSNE, UMAP, common.legend = TRUE, legend = "top")
 ```
@@ -136,27 +135,27 @@ panglao <- read_tsv("https://panglaodb.se/markers/PanglaoDB_markers_27_Mar_2020.
 panglao_pancreas <- panglao %>% filter(organ == "Pancreas")
 
 # restricting to human specific genes
-panglao_pancreas <- panglao_pancreas %>%  filter(str_detect(species,"Hs"))
+panglao_pancreas <- panglao_pancreas %>% filter(str_detect(species, "Hs"))
 
 # converting dataframes into a list of vectors, which is the format needed as input for CelliD
-panglao_pancreas <- panglao_pancreas %>%  
-  group_by(`cell type`) %>%  
-  summarise(geneset = list(`official gene symbol`))
+panglao_pancreas <- panglao_pancreas %>%
+    group_by(`cell type`) %>%
+    summarise(geneset = list(`official gene symbol`))
 pancreas_gs <- setNames(panglao_pancreas$geneset, panglao_pancreas$`cell type`)
 ```
 
 ## Obtaining gene signatures for all cell types in the Panglao database
 ```{r all gs}
-#filter to get human specific genes
-panglao_all <- panglao %>%  filter(str_detect(species,"Hs"))
+# filter to get human specific genes
+panglao_all <- panglao %>% filter(str_detect(species, "Hs"))
 
 # convert dataframes to a list of named vectors which is the format for CelliD input
-panglao_all <- panglao_all %>%  
-  group_by(`cell type`) %>%  
-  summarise(geneset = list(`official gene symbol`))
+panglao_all <- panglao_all %>%
+    group_by(`cell type`) %>%
+    summarise(geneset = list(`official gene symbol`))
 all_gs <- setNames(panglao_all$geneset, panglao_all$`cell type`)
 
-#remove very short signatures
+# remove very short signatures
 all_gs <- all_gs[sapply(all_gs, length) >= 10]
 ```
 
@@ -170,7 +169,6 @@ By default, only reference gene sets of size ≥10 are considered. In addition, 
 The `RunCellHGT` function will provide the -log10 corrected p-value for each cell and each signature evaluated, so a multi-class evaluation is enabled.  When a disjointed classification is required, a cell will be assigned to the gene set with the lowest significant corrected p-value. If no significant hits are found, a cell will remain unassigned. 
 
 ```{r predictions using pancreas preestablished geneset}
-
 # Performing per-cell hypergeometric tests against the gene signature collection
 HGT_pancreas_gs <- RunCellHGT(Baron, pathways = pancreas_gs, dims = 1:50, n.features = 200)
 
@@ -178,7 +176,7 @@ HGT_pancreas_gs <- RunCellHGT(Baron, pathways = pancreas_gs, dims = 1:50, n.feat
 pancreas_gs_prediction <- rownames(HGT_pancreas_gs)[apply(HGT_pancreas_gs, 2, which.max)]
 
 # For each cell, evaluate if the lowest p-value is significant
-pancreas_gs_prediction_signif <- ifelse(apply(HGT_pancreas_gs, 2, max)>2, yes = pancreas_gs_prediction, "unassigned")
+pancreas_gs_prediction_signif <- ifelse(apply(HGT_pancreas_gs, 2, max) > 2, yes = pancreas_gs_prediction, "unassigned")
 
 # Save cell type predictions as metadata within the Seurat object
 Baron$pancreas_gs_prediction <- pancreas_gs_prediction_signif
@@ -189,14 +187,14 @@ The previous cell type predictions can be visualized on any low-dimensionality r
 ```{r plottting cell type predictions based on pancreas-specific gene signatures}
 # Comparing the original labels with CelliD cell-type predictions based on pancreas-specific gene signatures
 color <- c("#F8766D", "#E18A00", "#BE9C00", "#8CAB00", "#24B700", "#00BE70", "#00C1AB", "#00BBDA", "#00ACFC", "#8B93FF", "#D575FE", "#F962DD", "#FF65AC", "grey")
-ggcolor <- setNames(color,c(sort(unique(Baron$cell.type)), "unassigned"))
-OriginalPlot <- DimPlot(Baron, reduction = "tsne", group.by = "cell.type") + 
-  scale_color_manual(values = ggcolor) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
-Predplot1 <- DimPlot(Baron, reduction = "tsne", group.by = "pancreas_gs_prediction") + 
-  scale_color_manual(values = ggcolor) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
-ggarrange(OriginalPlot, Predplot1, legend = "top",common.legend = TRUE)
+ggcolor <- setNames(color, c(sort(unique(Baron$cell.type)), "unassigned"))
+OriginalPlot <- DimPlot(Baron, reduction = "tsne", group.by = "cell.type") +
+    scale_color_manual(values = ggcolor) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+Predplot1 <- DimPlot(Baron, reduction = "tsne", group.by = "pancreas_gs_prediction") +
+    scale_color_manual(values = ggcolor) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+ggarrange(OriginalPlot, Predplot1, legend = "top", common.legend = TRUE)
 ```
 
 From an unbiased perspective, CelliD cell type prediction can be performed using as input a comprehensive set of cell types that are not necessarily restricted to the organ or tissue under study. To illustrate this scenario all cell types in the Panglao database can be evaluated at once. 
@@ -204,17 +202,17 @@ From an unbiased perspective, CelliD cell type prediction can be performed using
 ```{r predictions using all preestablished geneset}
 HGT_all_gs <- RunCellHGT(Baron, pathways = all_gs, dims = 1:50)
 all_gs_prediction <- rownames(HGT_all_gs)[apply(HGT_all_gs, 2, which.max)]
-all_gs_prediction_signif <- ifelse(apply(HGT_all_gs, 2, max)>2, yes = all_gs_prediction, "unassigned")
+all_gs_prediction_signif <- ifelse(apply(HGT_all_gs, 2, max) > 2, yes = all_gs_prediction, "unassigned")
 
 # For the sake of visualization, we group under the label "other" diverse cell types for which significant enrichments were found:
-Baron$all_gs_prediction <- ifelse(all_gs_prediction_signif %in% c(names(pancreas_gs), "Schwann cells", "Endothelial cells", "Macrophages", "Mast cells", "T cells","Fibroblasts", "unassigned"), all_gs_prediction_signif,"other")
+Baron$all_gs_prediction <- ifelse(all_gs_prediction_signif %in% c(names(pancreas_gs), "Schwann cells", "Endothelial cells", "Macrophages", "Mast cells", "T cells", "Fibroblasts", "unassigned"), all_gs_prediction_signif, "other")
 
 color <- c("#F8766D", "#E18A00", "#BE9C00", "#8CAB00", "#24B700", "#00BE70", "#00C1AB", "#00BBDA", "#00ACFC", "#8B93FF", "#D575FE", "#F962DD", "#FF65AC", "#D575FE", "#F962DD", "grey", "black")
-ggcolor <- setNames(color,c(sort(unique(Baron$cell.type)), "Fibroblasts", "Schwann cells", "unassigned", "other"))
-Baron$pancreas_gs_prediction <- factor(Baron$pancreas_gs_prediction,c(sort(unique(Baron$cell.type)), "Fibroblasts", "Schwann cells", "unassigned", "other"))
-PredPlot2 <- DimPlot(Baron, group.by = "all_gs_prediction", reduction = "tsne") + 
-  scale_color_manual(values = ggcolor, drop = FALSE) + 
-  theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+ggcolor <- setNames(color, c(sort(unique(Baron$cell.type)), "Fibroblasts", "Schwann cells", "unassigned", "other"))
+Baron$pancreas_gs_prediction <- factor(Baron$pancreas_gs_prediction, c(sort(unique(Baron$cell.type)), "Fibroblasts", "Schwann cells", "unassigned", "other"))
+PredPlot2 <- DimPlot(Baron, group.by = "all_gs_prediction", reduction = "tsne") +
+    scale_color_manual(values = ggcolor, drop = FALSE) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
 ggarrange(OriginalPlot, PredPlot2, legend = "top", common.legend = TRUE)
 ```
 
@@ -260,16 +258,16 @@ ggarrange(tSNE, UMAP, common.legend = TRUE, legend = "top")
 HGT_baron_cell_gs <- RunCellHGT(Seger, pathways = Baron_cell_gs, dims = 1:50)
 baron_cell_gs_match <- rownames(HGT_baron_cell_gs)[apply(HGT_baron_cell_gs, 2, which.max)]
 baron_cell_gs_prediction <- Baron$cell.type[baron_cell_gs_match]
-baron_cell_gs_prediction_signif <- ifelse(apply(HGT_baron_cell_gs, 2, max)>2, yes = baron_cell_gs_prediction, "unassigned")
+baron_cell_gs_prediction_signif <- ifelse(apply(HGT_baron_cell_gs, 2, max) > 2, yes = baron_cell_gs_prediction, "unassigned")
 Seger$baron_cell_gs_prediction <- baron_cell_gs_prediction_signif
 
 color <- c("#F8766D", "#E18A00", "#BE9C00", "#8CAB00", "#24B700", "#00BE70", "#00C1AB", "#00BBDA", "#00ACFC", "#8B93FF", "#D575FE", "#F962DD", "#FF65AC", "grey")
-ggcolor <- setNames(color,c(sort(unique(Baron$cell.type)), "unassigned"))
+ggcolor <- setNames(color, c(sort(unique(Baron$cell.type)), "unassigned"))
 
-ggPredictionsCellMatch <- DimPlot(Seger, group.by = "baron_cell_gs_prediction", pt.size = 0.2, reduction = "tsne") + ggtitle("Predicitons") + scale_color_manual(values = ggcolor, drop =FALSE) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
-ggOriginal <- DimPlot(Seger, group.by = "cell.type", pt.size = 0.2, reduction = "tsne") + ggtitle("Original") + scale_color_manual(values = ggcolor) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
+ggPredictionsCellMatch <- DimPlot(Seger, group.by = "baron_cell_gs_prediction", pt.size = 0.2, reduction = "tsne") + ggtitle("Predicitons") + scale_color_manual(values = ggcolor, drop = FALSE) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+ggOriginal <- DimPlot(Seger, group.by = "cell.type", pt.size = 0.2, reduction = "tsne") + ggtitle("Original") + scale_color_manual(values = ggcolor) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
 ggarrange(ggOriginal, ggPredictionsCellMatch, legend = "top", common.legend = TRUE)
 ```
 
@@ -278,16 +276,16 @@ ggarrange(ggOriginal, ggPredictionsCellMatch, legend = "top", common.legend = TR
 ```{r predictions using extracted geneset group}
 HGT_baron_group_gs <- RunCellHGT(Seger, pathways = Baron_group_gs, dims = 1:50)
 baron_group_gs_prediction <- rownames(HGT_baron_group_gs)[apply(HGT_baron_group_gs, 2, which.max)]
-baron_group_gs_prediction_signif <- ifelse(apply(HGT_baron_group_gs, 2, max)>2, yes = baron_group_gs_prediction, "unassigned")
+baron_group_gs_prediction_signif <- ifelse(apply(HGT_baron_group_gs, 2, max) > 2, yes = baron_group_gs_prediction, "unassigned")
 Seger$baron_group_gs_prediction <- baron_group_gs_prediction_signif
 
 color <- c("#F8766D", "#E18A00", "#BE9C00", "#8CAB00", "#24B700", "#00BE70", "#00C1AB", "#00BBDA", "#00ACFC", "#8B93FF", "#D575FE", "#F962DD", "#FF65AC", "grey")
-ggcolor <- setNames(color,c(sort(unique(Baron$cell.type)), "unassigned"))
+ggcolor <- setNames(color, c(sort(unique(Baron$cell.type)), "unassigned"))
 
-ggPredictions <- DimPlot(Seger, group.by = "baron_group_gs_prediction", pt.size = 0.2, reduction = "tsne") + ggtitle("Predicitons") + scale_color_manual(values = ggcolor, drop =FALSE) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
-ggOriginal <- DimPlot(Seger, group.by = "cell.type", pt.size = 0.2, reduction = "tsne") + ggtitle("Original") + scale_color_manual(values = ggcolor) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
+ggPredictions <- DimPlot(Seger, group.by = "baron_group_gs_prediction", pt.size = 0.2, reduction = "tsne") + ggtitle("Predicitons") + scale_color_manual(values = ggcolor, drop = FALSE) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
+ggOriginal <- DimPlot(Seger, group.by = "cell.type", pt.size = 0.2, reduction = "tsne") + ggtitle("Original") + scale_color_manual(values = ggcolor) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
 ggarrange(ggOriginal, ggPredictions, legend = "top", common.legend = TRUE)
 ```
 
@@ -311,19 +309,19 @@ Here we illustrate the use of Hallmark in HyperGeometric test and integrate the 
 #   group_by(gs_subcat, gs_name) %>%
 #   summarise(geneset = list(gene_symbol)) %>%
 #   group_by(gs_subcat) %>%
-#   summarise(all_geneset = list(setNames(geneset, gs_name))) 
+#   summarise(all_geneset = list(setNames(geneset, gs_name)))
 # KEGGgeneset <- setNames(KEGGgenesetDF$all_geneset, KEGGgenesetDF$gs_subcat)
 
 # Assessing per-cell functional enrichment analyses
 HGT_Hallmark <- RunCellHGT(Seger, pathways = Hallmark, dims = 1:50)
 
-#Integrating functional annotations as an "assay" slot in the Seurat objects
+# Integrating functional annotations as an "assay" slot in the Seurat objects
 
 Seger[["Hallmark"]] <- CreateAssayObject(HGT_Hallmark)
 
 # Visualizing per-cell functional enrichment annotations in a dimensionality-reduction representation of choice (e.g. MCA, PCA, tSNE, UMAP)
-ggG2Mcell <- FeaturePlot(Seger, "G2M-CHECKPOINT", order = TRUE, reduction = "tsne", min.cutoff = 2) + 
-  theme(legend.text = element_text(size =10), aspect.ratio = 1)
+ggG2Mcell <- FeaturePlot(Seger, "G2M-CHECKPOINT", order = TRUE, reduction = "tsne", min.cutoff = 2) +
+    theme(legend.text = element_text(size = 10), aspect.ratio = 1)
 
 ggG2Mcell
 ```

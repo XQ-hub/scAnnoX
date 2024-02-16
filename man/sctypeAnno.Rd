@@ -24,8 +24,8 @@ sctypeAnno
 Automated single-cell annotation using sc.type (Ianevski et al., 2022).
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
-ref.obj <- system.file('data/test', 'ref.obj.rds', package = 'Biotools') \%>\% readRDS(.)
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
+ref.obj <- system.file("data/test", "ref.obj.rds", package = "Biotools") \%>\% readRDS(.)
 marker.lst <- findMarkerToolsForSc(ref.obj, to.list = TRUE, top.k = 30)
 obj.seu <- sctypeAnno(obj.seu, marker.lst)
 }

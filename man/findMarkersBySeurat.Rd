@@ -24,6 +24,6 @@ findMarkersBySeurat
 Find markers for each subset using the wilcox.test function wrapped in the FindAllMarkers function from the Seurat package.
 }
 \examples{
-obj.seu <- system.file('data/test', 'test.obj.rds', package = 'Biotools') \%>\% readRDS(.)
+obj.seu <- system.file("data/test", "test.obj.rds", package = "Biotools") \%>\% readRDS(.)
 results <- findMarkersBySeurat(obj.seu, to.list = TRUE, logfc.threshold = 0.25, min.pct = 0.25)
 }

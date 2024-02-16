@@ -1,6 +1,6 @@
 library(scCATCH)
-context('scCATCH')
+context("scCATCH")
 
-test_that('scCATCH', {
-  expect_equal(colnames(demo_marker()), colnames(cellmatch))
+test_that("scCATCH", {
+    expect_equal(colnames(demo_marker()), colnames(cellmatch))
 })

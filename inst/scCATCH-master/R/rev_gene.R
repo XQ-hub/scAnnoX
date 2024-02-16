@@ -53,10 +53,10 @@ rev_gene <- function(data = NULL, data_type = NULL, species = NULL, geneinfo = N
             if (length(genename3) > 0) {
                 genename4 <- rep("NA", length(genename3))
                 for (i in 1:length(genename3)) {
-                  d1 <- geneinfo[geneinfo$synonyms == genename3[i], ]$symbol
-                  if (length(d1) == 1) {
-                    genename4[i] <- d1
-                  }
+                    d1 <- geneinfo[geneinfo$synonyms == genename3[i], ]$symbol
+                    if (length(d1) == 1) {
+                        genename4[i] <- d1
+                    }
                 }
                 genename3 <- c(genename1, genename3)
                 genename4 <- c(genename1, genename4)
@@ -90,12 +90,12 @@ rev_gene <- function(data = NULL, data_type = NULL, species = NULL, geneinfo = N
             if (length(genename2) > 0) {
                 genename3 <- genename2[genename2 %in% geneinfo$synonyms]
                 if (length(genename3) > 0) {
-                  for (i in 1:length(genename3)) {
-                    d1 <- geneinfo[geneinfo$synonyms == genename3[i], ]$symbol
-                    if (length(d1) == 1) {
-                      data[data$gene == genename3[i], ]$gene <- d1
+                    for (i in 1:length(genename3)) {
+                        d1 <- geneinfo[geneinfo$synonyms == genename3[i], ]$symbol
+                        if (length(d1) == 1) {
+                            data[data$gene == genename3[i], ]$gene <- d1
+                        }
                     }
-                  }
                 }
             }
             data <- data[data$gene %in% geneinfo$symbol, ]

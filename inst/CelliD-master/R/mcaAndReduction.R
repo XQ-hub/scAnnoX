@@ -2,9 +2,9 @@
 ##  MC Dimensionality Reduction                                             ####
 
 #' Diffusion Map on MCA coordinates
-#' 
-#' @description (!EXPERIMENTAL) Run DiffusionMap on MCA cell and feature coordinates. 
-#' This will allow to draw the trajectory of both cells and the genes at the same time.  
+#'
+#' @description (!EXPERIMENTAL) Run DiffusionMap on MCA cell and feature coordinates.
+#' This will allow to draw the trajectory of both cells and the genes at the same time.
 #'
 #' @param X Seurat or SingleCellExperiment object
 #' @param reduction Which dimensionality reduction to use, must be based on MCA.
@@ -86,9 +86,9 @@ RunMCDMAP.SingleCellExperiment <-
     }
 
 #' tSNE on MCA coordinates
-#' 
+#'
 #' @description (!EXPERIMENTAL) Run TSNE on MCA fetures and cells coordinates
-#' This will allow to embbed in 2D both cells and the genes at the same time. 
+#' This will allow to embbed in 2D both cells and the genes at the same time.
 #'
 #' @param X Seurat or SingleCellExperiment object
 #' @param reduction Which dimensionality reduction to use, must be based on MCA.
@@ -182,9 +182,9 @@ RunMCTSNE.SingleCellExperiment <-
 
 
 #' UMAP on MCA coordinates
-#' 
+#'
 #' @description (!EXPERIMENTAL) Run UMAP on MCA fetures and cells coordinates.
-#' This will allow to embbed in 2D both cells and the genes at the same time. 
+#' This will allow to embbed in 2D both cells and the genes at the same time.
 #'
 #' @param X Seurat or SingleCellExperiment object
 #' @param reduction Which dimensionality reduction to use, must be based on MCA.
@@ -221,8 +221,7 @@ RunMCUMAP.Seurat <-
         message("\nrunning UMAP\n")
         if (py_module_available("umap")) {
             method <- "umap-learn"
-        }
-        else {
+        } else {
             message("\numap-learn not detected\n")
             method <- "naive"
         }
@@ -256,8 +255,7 @@ RunMCUMAP.SingleCellExperiment <-
         message("\nrunning UMAP\n")
         if (reticulate::py_module_available("umap")) {
             method <- "umap-learn"
-        }
-        else {
+        } else {
             message("\numap-learn not detected\n")
             method <- "naive"
         }
@@ -279,7 +277,7 @@ RunMCUMAP.SingleCellExperiment <-
 
 
 #' GeneCellCoordinates
-#' 
+#'
 #' @description Get coordinates of both cells and features in a matrix
 #'
 #' @param X Seurat or SingleCellExperiment Object
